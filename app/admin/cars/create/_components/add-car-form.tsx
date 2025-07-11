@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
-import { Camera, ImagePlus, Loader2, X, Upload } from "lucide-react";
+import { Camera, Loader2, X, Upload } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 
 import { Input } from "@/components/ui/input";
@@ -30,7 +30,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { addCar, processCarImageWithAI } from "@/actions/cars";
-import useFetch from "@/hooks/use-fetch";
+import { useFetch } from "../../../../../hooks/useFetch";
 import Image from "next/image";
 
 // Predefined options
@@ -109,6 +109,7 @@ export const AddCarForm = () => {
     loading: addCarLoading,
     fn: addCarFn,
     data: addCarResult,
+    error: addCarError,
   } = useFetch(addCar);
 
   const {
@@ -118,13 +119,23 @@ export const AddCarForm = () => {
     error: processImageError,
   } = useFetch(processCarImageWithAI);
 
-  // Handle successful car addition
+  useEffect(() => {
+    toast.success("Add car form loaded successfully");
+  }, [])
+
+  // Handle successful / failure car addition
   useEffect(() => {
     if (addCarResult?.success) {
       toast.success("Car added successfully");
       router.push("/admin/cars");
+    } else {
+      console.error("Add car error:", addCarError);
+      toast.error(
+        addCarError ?? "Failed to add car. Please try again."
+      );
     }
-  }, [addCarResult, router]);
+
+  }, [addCarResult, router, addCarError]);
 
   useEffect(() => {
     if (processImageError) {
@@ -297,8 +308,8 @@ export const AddCarForm = () => {
         className="mt-6"
       >
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="manual">Manual Entry</TabsTrigger>
-          <TabsTrigger value="ai">AI Upload</TabsTrigger>
+          <TabsTrigger className="cursor-pointer" value="manual">Manual Entry</TabsTrigger>
+          <TabsTrigger className="cursor-pointer" value="ai">AI Upload</TabsTrigger>
         </TabsList>
 
         <TabsContent value="manual" className="mt-6">

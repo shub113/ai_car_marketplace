@@ -42,3 +42,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - Database and storage used is Supabase[https://supabase.com/].
 - Security is handled using Arcjet[https://app.arcjet.com/]
 - 
+
+
+
+
+###### DATABASE SCHEMAS
+https://supabase.com/dashboard/project/wwemgatcyzmhkhqzaxwd/database/schemas

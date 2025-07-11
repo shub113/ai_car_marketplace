@@ -1,5 +1,11 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
-import { ca } from 'date-fns/locale';
+"use server";
+import { auth } from '@clerk/nextjs/server';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import { db } from "@/lib/prisma";
+import { v4 as uuidv4 } from 'uuid';
+import { cookies } from 'next/headers';
+import { createClient } from '../lib/supabase';
+import { revalidatePath } from 'next/cache';
 
 async function fileToBase64(file: File): Promise<string> {
     const bytes = await file.arrayBuffer();
@@ -9,10 +15,10 @@ async function fileToBase64(file: File): Promise<string> {
 
 export async function processCarImageWithAI(file: File) {
     try {
-        if (!process.env.GIME_API_KEY) {
-            throw new Error("GIME_API_KEY is not set in the .env variables!");
+        if (!process.env.GIMENI_API_KEY) {
+            throw new Error("GIMENI_API_KEY is not set in the .env variables!");
         }
-        const genAI = new GoogleGenerativeAI(process.env.GIME_API_KEY)
+        const genAI = new GoogleGenerativeAI(process.env.GIMENI_API_KEY)
         const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
         const base64Image = await fileToBase64(file);
@@ -103,6 +109,103 @@ export async function processCarImageWithAI(file: File) {
     }
 }
 
-export async function addCar({ carData, images }) {
+export async function addCar({ carData, images }: { carData: any, images: string[] }) {
+    try {
+        const user = await auth();
+        if (!user) {
+            throw new Error("User not authenticated");
+        }
+        const loggedInUser = await db.user.findUnique({
+            where: {
+                clerkUserId: user.userId,
+            },
+        });
 
+        if (!loggedInUser) {
+            throw new Error("User not found");
+        }
+
+        // Create a unique folder name for this car's images
+        const carId = uuidv4();
+        const folderPath = `cars/${carId}`;
+
+        // Initialize Supabase client for server-side operations
+        const cookieStore = await cookies()
+        const supabase = createClient(cookieStore)
+
+        // Upload images to Supabase storage
+        const imageUrls: string[] = [];
+        for (const base64Image of images) {// Skip if image data is not valid
+            if (!base64Image || !base64Image.startsWith("data:image/")) {
+                console.warn("Skipping invalid image data");
+                return;
+            }
+
+            // Extract the base64 part (remove the data:image/xyz;base64, prefix)
+            const base64 = base64Image.split(",")[1];
+            const imageBuffer = Buffer.from(base64, "base64");
+
+            // Determine file extension from the data URL
+            const mimeMatch = base64Image.match(/data:image\/([a-zA-Z0-9]+);/);
+            const fileExtension = mimeMatch ? mimeMatch[1] : "jpeg";
+
+            // Create filename
+            const fileName = `image-${Date.now()}-${imageUrls.length}.${fileExtension}`;
+            const filePath = `${folderPath}/${fileName}`;
+
+            // Upload the file buffer directly
+            const { error } = await supabase.storage
+                .from("ai-car-marketplace")
+                .upload(filePath, imageBuffer, {
+                    contentType: `image/${fileExtension}`,
+                });
+
+            if (error) {
+                console.error("Error uploading image:", error);
+                throw new Error(`Failed to upload image: ${error.message}`);
+            }
+
+            // Get the public URL for the uploaded file
+            const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/car-images/${filePath}`; // disable cache in config
+            console.log('publicUrls:', publicUrl);
+
+            imageUrls.push(publicUrl);
+        }
+        console.log('Image URLs:', imageUrls);
+
+        if (imageUrls.length === 0) {
+            console.error("No valid images were uploaded");
+            throw new Error("No valid images were uploaded");
+        }
+        // Add the car to the database
+        await db.car.create({
+            data: {
+                id: carId, // Use the same ID we used for the folder
+                make: carData.make,
+                model: carData.model,
+                year: carData.year,
+                price: carData.price,
+                mileage: carData.mileage,
+                color: carData.color,
+                fuelType: carData.fuelType,
+                transmission: carData.transmission,
+                bodyType: carData.bodyType,
+                seats: carData.seats,
+                description: carData.description,
+                status: carData.status,
+                featured: carData.featured,
+                images: imageUrls, // Store the array of image URLs
+            },
+        });
+
+        // Revalidate the cars list page
+        revalidatePath("/admin/cars");
+
+        return {
+            success: true,
+        };
+    }
+    catch (error) {
+        throw new Error("Error adding car:" + error?.message);
+    }
 }
