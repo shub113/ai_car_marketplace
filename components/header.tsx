@@ -3,9 +3,11 @@ import Image from 'next/image';
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { CarFront, Heart, Layout, ArrowLeft } from 'lucide-react';
+import { checkUser } from '../lib/checkUser'
 
 export const Header = async ({ isAdminPage = false }) => {
-  const isAdmin = false;
+  const user = await checkUser();
+  const isAdmin = user?.role === 'ADMIN';
   return (
     <header className='fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b' >
       <nav className='mx-auto px-4 flex items-center justify-between' >
@@ -19,7 +21,7 @@ export const Header = async ({ isAdminPage = false }) => {
           {isAdminPage && <span>Admin</span>}
         </Link>
         <div className='flex items-center space-x-2' >
-          {isAdminPage ? <Link href={'/saved-cars'} >
+          {isAdminPage ? <Link href={'/'} >
             <Button variant={'outline'} className='flex items-center gap-2' >
               <ArrowLeft size={18} />
               <span >back to app</span>
