@@ -108,7 +108,7 @@ export const CarsList = () => {
             toast.success("Car updated successfully");
             fetchCars(search);
         }
-    }, [deleteResult, updateResult, search]);
+    }, [deleteResult, updateResult]);
 
     // Handle search submit
     const handleSearchSubmit = (e) => {
