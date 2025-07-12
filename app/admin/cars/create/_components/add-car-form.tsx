@@ -119,10 +119,6 @@ export const AddCarForm = () => {
     error: processImageError,
   } = useFetch(processCarImageWithAI);
 
-  useEffect(() => {
-    toast.success("Add car form loaded successfully");
-  }, [])
-
   // Handle successful / failure car addition
   useEffect(() => {
     if (addCarResult?.success) {
