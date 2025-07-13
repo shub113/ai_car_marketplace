@@ -53,4 +53,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ### DATABASE SCHEMAS
 https://supabase.com/dashboard/project/wwemgatcyzmhkhqzaxwd/database/schemas
 
-#LINKEDIN - https://www.linkedin.com/in/shubham-thakur311/
+# LINKEDIN - https://www.linkedin.com/in/shubham-thakur311/
