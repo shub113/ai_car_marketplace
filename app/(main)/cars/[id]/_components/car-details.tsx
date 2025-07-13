@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useAuth } from "@clerk/nextjs";
-import { AlertCircle, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 import {
   Car,
   Fuel,
@@ -136,8 +136,8 @@ export function CarDetails({ car, testDriveInfo }) {
                 <div
                   key={index}
                   className={`relative cursor-pointer rounded-md h-20 w-24 flex-shrink-0 transition ${index === currentImageIndex
-                      ? "border-2 border-blue-600"
-                      : "opacity-70 hover:opacity-100"
+                    ? "border-2 border-blue-600"
+                    : "opacity-70 hover:opacity-100"
                     }`}
                   onClick={() => setCurrentImageIndex(index)}
                 >
