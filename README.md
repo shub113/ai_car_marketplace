@@ -39,18 +39,18 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ###### ABOUT THE PROJECT
 - Authentication is handled using clerk[https://clerk.com/].
 - Database and storage used is Supabase[https://supabase.com/].
-- Security and rate limit is handled using Arcjet[https://app.arcjet.com/]
-- 
-
-
+- Security, rate limit and bot protection is handled using Arcjet[https://app.arcjet.com/]
 
 ###### FEATURES
-- CURD operation to add car inventory
+- CURD operations to add and maintain car inventory
 - Advanced AI search using GEMENI API
 - Getting deailt from car image using GEMENI API
 - Limit the public advanced AI search with arcjet
-
-
+- CURD to add and maintain test drives
+- Advaced sort and search for all cars
+- Viewing all reservations and updating status accordingly
 
 ###### DATABASE SCHEMAS
 https://supabase.com/dashboard/project/wwemgatcyzmhkhqzaxwd/database/schemas
+
+LINKEDIN - https://www.linkedin.com/in/shubham-thakur311/
