@@ -21,7 +21,6 @@ export const CarCard = ({ car }: { car: any }) => {
         loading: savingCar,
         fn: toggleSavedCarFn,
         data: toggleResult,
-        error: toggleError,
     } = useFetch(toggleSavedCar);
 
 
@@ -45,7 +44,7 @@ export const CarCard = ({ car }: { car: any }) => {
             toast.success(toggleResult.message);
         }
     }, [toggleResult]);
-
+    console.log('@@@@@ car:', car);
     return (
         <Card className="relative overflow-hidden hover:shadow-lg transition group" >
             {car?.images?.length ?

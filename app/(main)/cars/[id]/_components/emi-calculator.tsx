@@ -9,7 +9,6 @@ function EmiCalculator({ price = 1000 }) {
   const [interestRate, setInterestRate] = useState(5);
   const [loanTenure, setLoanTenure] = useState(1);
   const [results, setResults] = useState(null);
-  const [error, setError] = useState("");
 
   const handleLoanAmountChange = (value) => {
     const newLoanAmount = Math.min(Math.max(value, 1000), 150000);
@@ -23,14 +22,6 @@ function EmiCalculator({ price = 1000 }) {
     const newDownPayment = Math.min(Math.max(value, 0), loanAmount);
     setDownPayment(newDownPayment);
     setDownPaymentPercent((newDownPayment / loanAmount) * 100);
-    calculateLoan(loanAmount, newDownPayment, interestRate, loanTenure);
-  };
-
-  const handleDownPaymentPercentChange = (percent) => {
-    const newPercent = Math.min(Math.max(percent, 0), 100);
-    setDownPaymentPercent(newPercent);
-    const newDownPayment = (newPercent / 100) * loanAmount;
-    setDownPayment(newDownPayment);
     calculateLoan(loanAmount, newDownPayment, interestRate, loanTenure);
   };
 
@@ -219,12 +210,6 @@ function EmiCalculator({ price = 1000 }) {
             </div>
           </div>
 
-          {error && (
-            <div className="text-red-500 dark:text-red-400 text-sm mt-3">
-              {error}
-            </div>
-          )}
-
           {results && (
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 mt-4">
               <div className="text-center mb-4">
@@ -281,7 +266,7 @@ function EmiCalculator({ price = 1000 }) {
                     $
                     {formatNumber(
                       parseFloat(results.downPayment) +
-                        parseFloat(results.totalPayment)
+                      parseFloat(results.totalPayment)
                     )}
                   </div>
                 </div>
