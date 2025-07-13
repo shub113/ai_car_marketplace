@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import { Sidebar } from "./_components/sidebar";
-import { getAdmins } from "../../actions/admin";
+import { getAdmin } from "../../actions/admin";
 import { Header } from "@/components/header";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const admin = await getAdmins();
+  const admin = await getAdmin();
 
   // If user not found in our db or not an admin, redirect to 404
   if (!admin.authorized) {
