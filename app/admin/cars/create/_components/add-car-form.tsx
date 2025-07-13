@@ -109,7 +109,6 @@ export const AddCarForm = () => {
     loading: addCarLoading,
     fn: addCarFn,
     data: addCarResult,
-    error: addCarError,
   } = useFetch(addCar);
 
   const {
@@ -124,14 +123,9 @@ export const AddCarForm = () => {
     if (addCarResult?.success) {
       toast.success("Car added successfully");
       router.push("/admin/cars");
-    } else {
-      console.error("Add car error:", addCarError);
-      toast.error(
-        addCarError ?? "Failed to add car. Please try again."
-      );
     }
 
-  }, [addCarResult, router, addCarError]);
+  }, [addCarResult, router]);
 
   useEffect(() => {
     if (processImageError) {

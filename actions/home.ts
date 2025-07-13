@@ -73,12 +73,12 @@ export async function processImageSearch(file: File) {
         }
 
         // Check if API key is available
-        if (!process.env.GEMINI_API_KEY) {
+        if (!process.env.GIMENI_API_KEY) {
             throw new Error("Gemini API key is not configured");
         }
 
         // Initialize Gemini API
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        const genAI = new GoogleGenerativeAI(process.env.GIMENI_API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         // Convert image file to base64
