@@ -36,12 +36,12 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 
-###### ABOUT THE PROJECT
+## ABOUT THE PROJECT
 - Authentication is handled using clerk[https://clerk.com/].
 - Database and storage used is Supabase[https://supabase.com/].
 - Security, rate limit and bot protection is handled using Arcjet[https://app.arcjet.com/]
 
-###### FEATURES
+## FEATURES
 - CURD operations to add and maintain car inventory
 - Advanced AI search using GEMENI API
 - Getting deailt from car image using GEMENI API
@@ -50,7 +50,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - Advaced sort and search for all cars
 - Viewing all reservations and updating status accordingly
 
-###### DATABASE SCHEMAS
+### DATABASE SCHEMAS
 https://supabase.com/dashboard/project/wwemgatcyzmhkhqzaxwd/database/schemas
 
-LINKEDIN - https://www.linkedin.com/in/shubham-thakur311/
+#LINKEDIN - https://www.linkedin.com/in/shubham-thakur311/
