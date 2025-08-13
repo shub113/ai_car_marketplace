@@ -24,7 +24,7 @@ bun dev
 ## FEATURES
 - CURD operations to add and maintain car inventory
 - Advanced AI search using GEMENI API
-- Getting deailt from car image using GEMENI API
+- Getting detail from car image using GEMENI API
 - Limit the public advanced AI search with arcjet
 - CURD to add and maintain test drives
 - Advaced sort and search for all cars
